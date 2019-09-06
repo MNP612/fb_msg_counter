@@ -1,4 +1,4 @@
-# This script parses html files generated from facebook.com.
+# This script parses html s generated from facebook.com.
 # It converts these into pandas dataframes in order to visualize the total number of conversation with all your contacts.
 # The data can be requested from facebook via ...
 # Written by Marvin Nicolas Pohl, Berkeley 2019
@@ -211,31 +211,41 @@ for elem in chat_list:
         clear_chat_list.append(elem)
 
 clear_chat_list
-short_chat_list = clear_chat_list[:3]
+short_chat_list = clear_chat_list[0:3]
 
 short_chat_list
 
-plot_df = pd.DataFrame()
-#plot_df['date'] = ()
-partner_list = []
-partner_date_list = []
+def final_df(chat_list):
+    final_df = pd.DataFrame()
+    #final_df['date'] = ()
+    partner_list = []
+    partner_date_list = []
 
-for file in short_chat_list:
-    # call functions
-    raw_text = load_file('/Users/Marvin/Documents/Diverse/facebook-100000033726811/messages/'+file)
-    df, user, partner = html_string_to_dataframe(raw_text)
-    to_datetime(df, create_chats=True);
-    date_vs_counts = count_messages(df)
+    for file in chat_list:
+        # call functions
+        raw_text = load_file('/Users/Marvin/Documents/Diverse/facebook-100000033726811/messages/'+file)
+        df, user, partner = html_string_to_dataframe(raw_text)
+        to_datetime(df, create_chats=True);
+        date_vs_counts = count_messages(df)
 
 
-    partner_list.append(partner)
-    partner_date_list.append(partner+' (date)')
+        partner_list.append(partner)
+        #partner_date_list.append(partner+' (date)')
 
-    date_vs_counts.set_index('date', inplace=True)
-    plot_df = plot_df.append(date_vs_counts, sort=False)
+        date_vs_counts.set_index('date', inplace=True)
+        final_df = final_df.append(date_vs_counts, sort=False)
+
+    return final_df, partner_list
+
+final_df, partner_list = final_df(short_chat_list)
+partner_list
+final_df
+
+
+
 
 # plot 'date' vs. 'counts'
-plot_df.reset_index().plot(x='date', y=partner_list, style='o', figsize=(15,5), grid=True, label=partner_list)
+final_df.reset_index().plot(x='date', y=partner_list, style='o', figsize=(15,5), grid=True, label=partner_list)
 plt.ylabel('sent messages')
 
 # export plot as image
