@@ -3,8 +3,6 @@
 # The data can be requested from facebook via ...
 # Written by Marvin Nicolas Pohl, Berkeley 2019
 
-
-
 # import modules
 import codecs
 import re
@@ -12,22 +10,25 @@ import pandas as pd
 from datetime import datetime
 #from dateutil.parser import parse
 import numpy as np
-#from matplotlib import pyplot
 import matplotlib.pyplot as plt
+#from matplotlib import pyplot
+#from matplotlib.pyplot import figure
 #figure(num=None, figsize=(8, 6), dpi=80, facecolor='w', edgecolor='k')
 import tkinter as tk # choose a file
 from tkinter import filedialog # dialog to choose a file
-#----------------------------------------------------------------------
+import os # to create the directory '/chats' for easy readable html files
+
+
 
 # open file choose dialog
-root = tk.Tk()
-root.withdraw()
-file_path = filedialog.askopenfilename()
-
-
+#root = tk.Tk()
+#root.withdraw()
+#file_path = filedialog.askopenfilename()
+file_path = '/Users/Marvin/Documents/Diverse/facebook-100000033726811/messages/alexknorr_167d55de47/message.html'
 
 
 # define functions
+
 # read messages.html file and create a string
 def load_file(path):
     html = codecs.open(path, 'r').read()
@@ -96,7 +97,8 @@ def html_string_to_dataframe(html):
 
 # the 'date' entries in the dataframe are strings
 # this function converts these strings to timestamps
-def to_datetime(dataframe):
+# this function also creates easier readable html files if statement 'create_chats' is set to 'True'
+def to_datetime(dataframe, create_chats):
 
     # convert list of month names into list of numbers
     #list of month names
@@ -120,6 +122,17 @@ def to_datetime(dataframe):
     for index in ran:
         dataframe['date'][index] = datetime.strptime(dataframe['date'][index], '%d %m %Y %H:%M')
 
+    # create new directory '/chats'
+    if create_chats == True:
+        try:
+            os.mkdir('chats/')
+        except OSError:
+            None
+        # create easy readable html file of chat
+        df.to_html('chats/'+partner+'.html')
+    elif create_chats == True: None
+
+
     # get rid of hours and minutes
     dataframe['date'] = dataframe['date'].dt.date
 
@@ -130,27 +143,100 @@ def to_datetime(dataframe):
 def count_messages(dataframe):
 
     # crate new column ('counts') in original dataframe cointaining ones in each row
-    df['counts'] = pd.Series(np.ones(len(df)))
+    #df['counts'] = pd.Series(np.ones(len(df)))
+    df[partner] = pd.Series(np.ones(len(df)))
 
     # group by 'date' and count 'counts'
     # reset in index
-    date_vs_counts = pd.DataFrame(dataframe.groupby('date')['counts'].count())
+    #date_vs_counts = pd.DataFrame(dataframe.groupby('date')['counts'].count())
+    date_vs_counts = pd.DataFrame(dataframe.groupby('date')[partner].count())
     date_vs_counts.reset_index(level=0, inplace=True)
 
     return date_vs_counts
 
 
 
+
 # call functions
 raw_text = load_file(file_path)
 df, user, partner = html_string_to_dataframe(raw_text)
-to_datetime(df);
+to_datetime(df, create_chats=True);
 date_vs_counts = count_messages(df)
 
 
 
 # plot 'date' vs. 'counts'
-date_vs_counts.plot(x='date', y='counts', style='o', figsize=(10,5), grid=True)
+#date_vs_counts.plot(x='date', y='counts', style='o', figsize=(10,5), grid=True, label=partner)
+#date_vs_counts.plot(x='date', y=partner, style='o', figsize=(10,5), grid=True, label=partner)
+#plt.ylabel('sent messages')
+
+# export plot as image
+#plt.savefig('dialog_counts.png')
+
+
+
+def load_chat_list_file(path):
+    string = codecs.open(path, 'r').read()
+
+    return string
+
+
+
+chat_list = load_chat_list_file('/Users/Marvin/Documents/Diverse/facebook-100000033726811/messages/messages.html')
+
+def split_chat_list_file(chat_list):
+
+    # split string to list of strings
+    lst = chat_list.split('href="messages/')
+
+    return lst
+
+
+split_list = split_chat_list_file(chat_list)
+
+lst = []
+for elem in split_list:
+    if 'message.html' in elem:
+        lst.append(elem)
+
+chat_list = []
+for elem in lst:
+    cut = (re.search('(.*)">', elem).group(1))
+    cut = (re.search('(.*)">', cut).group(1))
+    chat_list.append(cut)
+
+clear_chat_list = []
+for elem in chat_list:
+    if 'facebook' not in elem:
+        clear_chat_list.append(elem)
+
+clear_chat_list
+short_chat_list = clear_chat_list[:3]
+
+short_chat_list
+
+plot_df = pd.DataFrame()
+#plot_df['date'] = ()
+partner_list = []
+partner_date_list = []
+
+for file in short_chat_list:
+    # call functions
+    raw_text = load_file('/Users/Marvin/Documents/Diverse/facebook-100000033726811/messages/'+file)
+    df, user, partner = html_string_to_dataframe(raw_text)
+    to_datetime(df, create_chats=True);
+    date_vs_counts = count_messages(df)
+
+
+    partner_list.append(partner)
+    partner_date_list.append(partner+' (date)')
+
+    date_vs_counts.set_index('date', inplace=True)
+    plot_df = plot_df.append(date_vs_counts, sort=False)
+
+# plot 'date' vs. 'counts'
+plot_df.reset_index().plot(x='date', y=partner_list, style='o', figsize=(15,5), grid=True, label=partner_list)
+plt.ylabel('sent messages')
 
 # export plot as image
 plt.savefig('dialog_counts.png')
