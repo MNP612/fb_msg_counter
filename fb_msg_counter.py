@@ -8,27 +8,74 @@ import codecs
 import re
 import pandas as pd
 from datetime import datetime
-#from dateutil.parser import parse
 import numpy as np
 import matplotlib.pyplot as plt
-#from matplotlib import pyplot
-#from matplotlib.pyplot import figure
-#figure(num=None, figsize=(8, 6), dpi=80, facecolor='w', edgecolor='k')
-import tkinter as tk # choose a file
-from tkinter import filedialog # dialog to choose a file
 import os # to create the directory '/chats' for easy readable html files
 
 
-
-# open file choose dialog
-#root = tk.Tk()
-#root.withdraw()
-#file_path = filedialog.askopenfilename()
-file_path = '/Users/Marvin/Documents/Diverse/facebook-100000033726811/messages/alexknorr_167d55de47/message.html'
+# directory path of 'messages.html'
+# to be found in the '/facebook/messages' folder
+path = '/Users/Marvin/Documents/Diverse/facebook-100000033726811/messages/'
 
 
 # define functions
 
+
+# convert the 'messages.html' file into a clean list of the directories where your chats are stored
+def message_file_to_chat_list(path):
+
+    html_string = codecs.open(path+'messages.html', 'r').read()
+
+    # split string to list of strings
+    lst = html_string.split('href="messages/')
+
+    # select only list entries that contain chat messages
+    split_list = []
+    for elem in lst:
+        if 'message.html' in elem:
+            split_list.append(elem)
+
+    # cut out unnessaary characters from list elements
+    chat_list = []
+    for elem in split_list:
+        cut = (re.search('(.*)">', elem).group(1))
+        cut = (re.search('(.*)">', cut).group(1))
+        chat_list.append(cut)
+
+    # clear out meaningless elements
+    clear_chat_list = []
+    for elem in chat_list:
+        if 'facebook' not in elem:
+            clear_chat_list.append(elem)
+
+    return clear_chat_list
+
+
+# loop through a set of funtions that read and parse your chats which are stored in subfolders of path as html files
+# functions are enumarated and defined later on
+def clean_df(chat_list, create_chats=True):
+
+    df1 = pd.DataFrame()
+    partner_list = []
+
+    for file in short_chat_list:
+        # call functions
+        raw_text = load_file(path+file) # Function 1
+        df2, user, partner = html_string_to_dataframe(raw_text) # Function 2
+        to_datetime(df2, partner, create_chats=create_chats) # Function 3
+        date_vs_counts = count_messages(df2, partner) # Function 4
+        date_vs_counts.set_index('date', inplace=True)
+
+        partner_list.append(partner)
+        #partner_date_list.append(partner+' (date)')
+
+
+        df1 = df1.append(date_vs_counts, sort=False)
+
+    return df1, partner_list
+
+
+# Function 1
 # read messages.html file and create a string
 def load_file(path):
     html = codecs.open(path, 'r').read()
@@ -36,6 +83,7 @@ def load_file(path):
     return html
 
 
+# Function 2
 # parse the string and convert it into a pandas dataframe containing 'date', 'name' and 'text'
 # additionally, extract the user name and the name of the dialog partner
 # return dataframe, user_name, dialog_partner
@@ -95,10 +143,11 @@ def html_string_to_dataframe(html):
     return dataframe, user_name, dialog_partner
 
 
+# Function 3
 # the 'date' entries in the dataframe are strings
 # this function converts these strings to timestamps
 # this function also creates easier readable html files if statement 'create_chats' is set to 'True'
-def to_datetime(dataframe, create_chats):
+def to_datetime(dataframe, partner, create_chats):
 
     # convert list of month names into list of numbers
     #list of month names
@@ -129,8 +178,8 @@ def to_datetime(dataframe, create_chats):
         except OSError:
             None
         # create easy readable html file of chat
-        df.to_html('chats/'+partner+'.html')
-    elif create_chats == True: None
+        dataframe.to_html('chats/'+partner+'.html')
+    #else: None
 
 
     # get rid of hours and minutes
@@ -139,114 +188,44 @@ def to_datetime(dataframe, create_chats):
     return dataframe
 
 
+# Function 4
 # create a smaller dataframe that groups the dialog by date and counts the number of messages for each day
-def count_messages(dataframe):
+def count_messages(df, partner):
 
-    # crate new column ('counts') in original dataframe cointaining ones in each row
-    #df['counts'] = pd.Series(np.ones(len(df)))
+    # crate new column ('partner) in original dataframe cointaining ones in each row
     df[partner] = pd.Series(np.ones(len(df)))
 
     # group by 'date' and count 'counts'
     # reset in index
-    #date_vs_counts = pd.DataFrame(dataframe.groupby('date')['counts'].count())
-    date_vs_counts = pd.DataFrame(dataframe.groupby('date')[partner].count())
+    date_vs_counts = pd.DataFrame(df.groupby('date')[partner].count())
     date_vs_counts.reset_index(level=0, inplace=True)
 
     return date_vs_counts
 
 
+# plot the results
+def plot(df, partner_list):
+    final_df.reset_index().plot(x='date', y=partner_list, style='o', figsize=(15,5), grid=True, label=partner_list)
+    plt.ylabel('sent messages')
+
+
+
+    plt.savefig('dialog_counts.png')
+
+
+    return plt.show()
 
 
 # call functions
-raw_text = load_file(file_path)
-df, user, partner = html_string_to_dataframe(raw_text)
-to_datetime(df, create_chats=True);
-date_vs_counts = count_messages(df)
 
 
-
-# plot 'date' vs. 'counts'
-#date_vs_counts.plot(x='date', y='counts', style='o', figsize=(10,5), grid=True, label=partner)
-#date_vs_counts.plot(x='date', y=partner, style='o', figsize=(10,5), grid=True, label=partner)
-#plt.ylabel('sent messages')
-
-# export plot as image
-#plt.savefig('dialog_counts.png')
-
-
-
-def load_chat_list_file(path):
-    string = codecs.open(path, 'r').read()
-
-    return string
-
-
-
-chat_list = load_chat_list_file('/Users/Marvin/Documents/Diverse/facebook-100000033726811/messages/messages.html')
-
-def split_chat_list_file(chat_list):
-
-    # split string to list of strings
-    lst = chat_list.split('href="messages/')
-
-    return lst
-
-
-split_list = split_chat_list_file(chat_list)
-
-lst = []
-for elem in split_list:
-    if 'message.html' in elem:
-        lst.append(elem)
-
-chat_list = []
-for elem in lst:
-    cut = (re.search('(.*)">', elem).group(1))
-    cut = (re.search('(.*)">', cut).group(1))
-    chat_list.append(cut)
-
-clear_chat_list = []
-for elem in chat_list:
-    if 'facebook' not in elem:
-        clear_chat_list.append(elem)
-
-clear_chat_list
+# call function to create list of directories where your chats are stored
+clear_chat_list = message_file_to_chat_list(path)
+# 'clear_chat_list' is still buggy -> work only with the first three chats for the moment -> work on that issue!
 short_chat_list = clear_chat_list[0:3]
+# call function to create a clean dataframe and a list of chat partners
+final_df, partner_list = clean_df(short_chat_list)
+# call plot function
+plot(final_df, partner_list)
 
-short_chat_list
-
-def final_df(chat_list):
-    final_df = pd.DataFrame()
-    #final_df['date'] = ()
-    partner_list = []
-    partner_date_list = []
-
-    for file in chat_list:
-        # call functions
-        raw_text = load_file('/Users/Marvin/Documents/Diverse/facebook-100000033726811/messages/'+file)
-        df, user, partner = html_string_to_dataframe(raw_text)
-        to_datetime(df, create_chats=True);
-        date_vs_counts = count_messages(df)
-
-
-        partner_list.append(partner)
-        #partner_date_list.append(partner+' (date)')
-
-        date_vs_counts.set_index('date', inplace=True)
-        final_df = final_df.append(date_vs_counts, sort=False)
-
-    return final_df, partner_list
-
-final_df, partner_list = final_df(short_chat_list)
-partner_list
-final_df
-
-
-
-
-# plot 'date' vs. 'counts'
-final_df.reset_index().plot(x='date', y=partner_list, style='o', figsize=(15,5), grid=True, label=partner_list)
-plt.ylabel('sent messages')
-
-# export plot as image
-plt.savefig('dialog_counts.png')
+# export plot as .png
