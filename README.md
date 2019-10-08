@@ -1,4 +1,4 @@
-# fb_msg_counts
+# fb_msg_counter
 
 This script parses HTML chat files generated from facebook.com.
 It converts clean HTML files which are saved into a separate `/chats` folder.
