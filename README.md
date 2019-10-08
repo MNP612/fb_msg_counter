@@ -30,4 +30,4 @@ Once we've finished preparing your download request, we'll send a notification l
 * Go to the Available Files section of the Download Your Information tool.
 * Click **Download** and enter your password.
 
-After unzipping the file your personal chat data can be found in the ´/messages subfolder.
+After unzipping the file your personal chat data can be found in the ´/messages´ subfolder.
