@@ -1,13 +1,18 @@
-# This script parses html s generated from facebook.com.
-# It converts these into pandas dataframes in order to visualize the total number of conversation with all your contacts.
-# The data can be requested from facebook via ...
-# Written by Marvin Nicolas Pohl, Berkeley 2019
+'''
+The facebook message counter visualizes your privat chats on a time scale and creates clean HTML chat files.
+See readme for details.
+
+Written by Marvin Nicolas Pohl, Berkeley 2019
+marvin.nicolas@me.com
+'''
+
 import os
 import codecs
 import pandas as pd
 import numpy as np
 from datetime import datetime
 import matplotlib.pyplot as plt
+import sys
 
 
 # please put the python file in the folder directory'/facebook/messages'
@@ -32,7 +37,7 @@ class handle_html:
         split_lst = [x for x in lst if 'message.html' in x]
 
         # cut out unnessaary characters from list elements
-        chatlist = []
+        chatlist = list()
         for elem in split_lst:
             split_position = elem.find('"')
             cut = elem[:split_position]
@@ -94,7 +99,7 @@ def to_dataframe(chat):
 def to_datetime(dataframe, partner, create_chats):
 
     # convert list of month names into list of numbers
-    #list of month names and month numbers
+    # list of month names and month numbers
     month, number = (['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
                     ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'])
 
@@ -169,7 +174,10 @@ def main():
     total_msg_count_list = list()
     counts_df_all = list()
 
-    for chat in chatlist:
+    for i, chat in enumerate(chatlist):
+        sys.stdout.write( '\r%d/' % i + str(len(chatlist)) + ' chats analyzed' )
+        sys.stdout.flush()
+
         df, partner = to_dataframe(chat)
         partner_list.append(partner)
         total_msg_count_list.append(len(df))
@@ -191,9 +199,7 @@ def main():
         counts_df_all.append(counts_df)
         final_df = pd.concat(counts_df_all, sort='True')
 
-
-
-
     plot(final_df, partner_list, total_msg_count_list, safefig)
 
-main()
+if __name__ == '__main__':
+    main()
