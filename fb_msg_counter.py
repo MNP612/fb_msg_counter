@@ -24,7 +24,7 @@ safefig = True
 create_chats = True
 
 
-# convert the 'messages.html' file into a clean list of the directories where your chats are stored
+# convert the 'messages.html' file into a clean list containing the directories of the chat files
 class handle_html:
     # open the html file
     def open(self):
@@ -39,7 +39,7 @@ class handle_html:
         # select only list entries that contain chat messages
         split_lst = [x for x in lst if 'message.html' in x]
 
-        # cut out unnessaary characters from list elements
+        # cut out unneccessary characters from list elements
         chatlist = list()
         for elem in split_lst:
             split_position = elem.find('"')

@@ -1,4 +1,6 @@
 # fb_msg_counter
+Written by Marvin Nicolas Pohl, Berkeley 2019
+marvin.nicolas@me.com
 
 This script parses HTML chat files generated from facebook.com.
 
