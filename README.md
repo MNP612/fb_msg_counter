@@ -1,15 +1,19 @@
 # fb_msg_counter
 
 This script parses HTML chat files generated from facebook.com.
-It converts clean HTML files which are saved into a separate `/chats` folder.
-It also plots the total number of conversation with all your contacts and saves the plot as a PNG file
-All you personal data facebook has ever recorded can be requested from facebook.
 
+It converts clean HTML files which are saved into a separate `/chats` folder.
+
+It also plots the total number of conversation with all your contacts and saves the plot as a PNG file.
+
+
+
+*Example plot:**
 ![Gif in action](https://i.imgur.com/GtXSmCp.png)
 
 
 
-
+All you personal data facebook has ever recorded can be requested from facebook.
 ## To download a copy of your Facebook data:
 
 * Go to the top right of Facebook and click the down arrow button.
@@ -23,7 +27,7 @@ All you personal data facebook has ever recorded can be requested from facebook.
   * A specific date range of information. If you don't select a date range, you'll request all the information for the categories you've selected.
 * Click **Create File** to confirm the download request.
 
-After you've made a download request, it will appear as **Pending** in the **Available** Files section of the Download Your Information Tool. It may take several days for us to finish preparing your download request
+After you've made a download request, it will appear as **Pending** in the **Available** Files section of the Download Your Information Tool. It may take several days for us to finish preparing your download request.
 
 
 Once we've finished preparing your download request, we'll send a notification letting you know it's ready.
