@@ -2,6 +2,8 @@
 The facebook message counter visualizes your privat chats on a time scale and creates clean HTML chat files.
 See readme for details.
 
+IMPORTANT: Put this python file into the main folder you obtained from facebook. It should be names '/facebook-[some ranom number]'
+
 Written by Marvin Nicolas Pohl, Berkeley 2019
 marvin.nicolas@me.com
 '''
@@ -15,8 +17,9 @@ import matplotlib.pyplot as plt
 import sys
 
 
-# please put the python file in the folder directory'/facebook/messages'
-path = '/Users/Marvin/Documents/Diverse/facebook-100000033726811/messages/'
+# set the /messages subfolder as working directory
+dirname = os.path.dirname(__file__)
+path = os.path.join(dirname, 'messages/')
 safefig = True
 create_chats = True
 
@@ -121,11 +124,11 @@ def to_datetime(dataframe, partner, create_chats):
     # only if create_chats == True in header
     if create_chats == True:
         try:
-            os.mkdir('chats/')
+            os.mkdir('fb_msg_counter/')
         except OSError:
             None
         # create easy readable html file of chat
-        dataframe.to_html('chats/'+partner+'.html')
+        dataframe.to_html('fb_msg_counter/'+partner+'.html')
 
     # get rid of hours and minutes
     dataframe['date'] = dataframe['date'].dt.date
@@ -159,7 +162,7 @@ def plot(df, partner_list, total_msg_count_list, safefig=safefig):
 
     # export plot as .png
     if safefig == True:
-        plt.savefig('dialog_counts.png', bbox_inches="tight")
+        plt.savefig('fb_msg_counter/dialog_counts.png', bbox_inches="tight")
     else: None
 
     return plt.show()
