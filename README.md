@@ -5,6 +5,9 @@ It converts clean HTML files which are saved into a separate `/chats` folder.
 It also plots the total number of conversation with all your contacts and saves the plot as a PNG file
 All you personal data facebook has ever recorded can be requested from facebook.
 
+![Gif in action](https://i.imgur.com/GtXSmCp.png)
+
+
 
 
 ## To download a copy of your Facebook data:
@@ -31,3 +34,5 @@ Once we've finished preparing your download request, we'll send a notification l
 * Click **Download** and enter your password.
 
 After unzipping the file your personal chat data can be found in the `/messages` subfolder.
+
+IMPORTANT: Put the `fb_msg_counter.py` file into the main folder you obtained from facebook. It should be named like '/facebook-[some ranom number]'
