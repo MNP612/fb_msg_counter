@@ -1,7 +1,7 @@
 # fb_msg_counts
 
 This script parses HTML chat files generated from facebook.com.
-It converts clean HTML files which are saved into a separate ´/chats´ folder.
+It converts clean HTML files which are saved into a separate `/chats` folder.
 It also plots the total number of conversation with all your contacts and saves the plot as a PNG file
 All you personal data facebook has ever recorded can be requested from facebook.
 
@@ -30,4 +30,4 @@ Once we've finished preparing your download request, we'll send a notification l
 * Go to the Available Files section of the Download Your Information tool.
 * Click **Download** and enter your password.
 
-After unzipping the file your personal chat data can be found in the ´/messages´ subfolder.
+After unzipping the file your personal chat data can be found in the `/messages` subfolder.
