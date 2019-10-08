@@ -8,7 +8,7 @@ It also plots the total number of conversation with all your contacts and saves 
 
 
 
-*Example plot:**
+**Example plot:**
 ![Gif in action](https://i.imgur.com/GtXSmCp.png)
 
 
@@ -39,4 +39,4 @@ Once we've finished preparing your download request, we'll send a notification l
 
 After unzipping the file your personal chat data can be found in the `/messages` subfolder.
 
-IMPORTANT: Put the `fb_msg_counter.py` file into the main folder you obtained from facebook. It should be named like '/facebook-[some ranom number]'
+IMPORTANT: Put the `fb_msg_counter.py` file into the main folder you obtained from facebook. It should be named like `/facebook-[some random number]`
