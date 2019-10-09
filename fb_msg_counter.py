@@ -162,7 +162,7 @@ def plot(df, partner_list, total_msg_count_list, safefig=safefig):
 
     # export plot as .png
     if safefig == True:
-        plt.savefig('fb_msg_counter/dialog_counts.png', bbox_inches="tight")
+        plt.savefig('fb_msg_counter/00_fb_msg_counter.png', bbox_inches="tight")
     else: None
 
     return plt.show()

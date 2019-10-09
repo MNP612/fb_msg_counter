@@ -11,7 +11,7 @@ It also plots the total number of conversation with all your contacts and saves 
 
 
 **Example plot:**
-![Gif in action](https://i.imgur.com/GtXSmCp.png)
+![Gif in action](https://i.imgur.com/k5k8tTm.png)
 
 
 
