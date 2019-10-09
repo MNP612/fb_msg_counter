@@ -1,6 +1,4 @@
 # fb_msg_counter
-Written by Marvin Nicolas Pohl, Berkeley 2019
-marvin.nicolas@me.com
 
 This script parses HTML chat files generated from facebook.com.
 
@@ -36,9 +34,15 @@ Once we've finished preparing your download request, we'll send a notification l
 
 ## To download a copy of data you requested:
 
-* Go to the Available Files section of the Download Your Information tool.
+* Go to the **Available Files** section of the **Download Your Information** tool.
 * Click **Download** and enter your password.
 
 After unzipping the file your personal chat data can be found in the `/messages` subfolder.
 
 IMPORTANT: Put the `fb_msg_counter.py` file into the main folder you obtained from facebook. It should be named like `/facebook-[some random number]`
+
+
+_____________
+Written by Marvin Nicolas Pohl, Berkeley 2019
+
+marvin.nicolas@me.com
