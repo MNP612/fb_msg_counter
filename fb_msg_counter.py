@@ -2,7 +2,8 @@
 The facebook message counter visualizes your privat chats on a time scale and creates clean HTML chat files.
 See readme for details.
 
-IMPORTANT: Put this python file into the main folder you obtained from facebook. It should be names '/facebook-[some ranom number]'
+IMPORTANT:  Put this python file into the main folder you obtained from facebook.
+            It should be names '/facebook-[some ranom number]'
 
 Written by Marvin Nicolas Pohl, Berkeley 2019
 marvin.nicolas@me.com
@@ -27,7 +28,8 @@ safefig = True
 create_chats = True
 
 
-# preparation includes reading the HTML files and creating a chat list containing the directories where the chat files are located
+# preparation includes reading the HTML files
+# and creating a chat list containing the directories where the chat files are located
 class preparation:
     # open html file
     def open(self):
@@ -164,9 +166,10 @@ def count_messages(df, partner):
 
 # plot the results
 def plot(df, partner_list, total_msg_count_list, safefig=safefig):
-    legend = list(zip(partner_list,total_msg_count_list))
+    # the plot legend ('lgnd') contains the partner name and the total messages ever had
+    lgnd = list(zip(partner_list,total_msg_count_list))
 
-    df.reset_index().plot(x='date', y=partner_list, style='o', figsize=(12,len(partner_list)/5), grid=True, label=legend)
+    df.reset_index().plot(x='date', y=partner_list, style='o', figsize=(12,len(partner_list)/5), grid=True, label=lgnd)
 
     plt.subplots_adjust(right=0.75)
 
@@ -199,7 +202,8 @@ def main():
         partner_list.append(partner)
         total_msg_count_list.append(len(df))
 
-        # if execution fails the dataframe gets deleted, no 'count_messages' dataframe is created and the respective element from 'partner_list' gets removed
+        # if execution fails the dataframe gets deleted
+        # and no 'count_messages' dataframe is created and the respective element from 'partner_list' gets removed
         try:
             df = to_datetime(df, partner, create_chats)
         except:
