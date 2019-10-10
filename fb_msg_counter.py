@@ -21,8 +21,8 @@ import sys
 
 # set the /messages subfolder as working directory
 dir = os.path.dirname(os.path.realpath(__file__))+'/'
-safefig = False
-create_chats = False
+safefig = True
+create_chats = True
 
 
 # convert the 'messages.html' file into a clean list containing the directories of the chat files
