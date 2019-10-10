@@ -24,8 +24,6 @@ dir = os.path.dirname(os.path.realpath(__file__))+'/'
 safefig = True
 create_chats = True
 
-dir = '/Users/Marvin/Documents/Diverse/facebook-100000033726811(2)/'
-
 
 # convert the 'messages.html' file into a clean list containing the directories of the chat files
 class handle_html:
