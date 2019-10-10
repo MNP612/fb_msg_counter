@@ -20,11 +20,10 @@ import matplotlib.pyplot as plt
 import sys
 
 # set the /messages subfolder as working directory
-#dirname = os.path.dirname(__file__)
-#dir = os.path.join(dirname, 'messages/')
+dir = os.path.dirname(os.path.realpath(__file__))+'/'
 safefig = False
 create_chats = False
-dir = '/Users/Marvin/Documents/Diverse/facebook-100000033726811/'
+
 
 # convert the 'messages.html' file into a clean list containing the directories of the chat files
 class handle_html:
@@ -99,23 +98,6 @@ def to_dataframe(chat):
 
 def to_datetime(dataframe, partner, create_chats):
 
-    # convert list of month names into list of numbers
-    # list of month names and month numbers
-    # month, number = (['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
-    #                 ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'])
-    #
-    # # map month names and numbers into a list of touples
-    # touple = list(enumerate(month, start=1))
-    #
-    # # replace month names by numbers
-    # for num, mon in touple:
-    #     dataframe['date'] = dataframe['date'].str.replace(mon, str(num))
-    #
-    # # remove trailing dots from the day numbers
-    # dataframe['date'] = dataframe['date'].str.replace('.', '')
-
-    # convert strings into timestamps
-
     if 'PM' in dataframe['date'][0]:
         locale.setlocale(locale.LC_TIME, 'en_US')
         for index in range(len(dataframe['date'])):
@@ -177,7 +159,6 @@ def plot(df, partner_list, total_msg_count_list, safefig=safefig):
 
 
 def main():
-    #html_str_chats = handle_html.open(glob.glob(dir+'messages/*messages.html')[0])
     chatlist = handle_html.create_chatlist()
 
     df_list = list()
@@ -185,7 +166,7 @@ def main():
     total_msg_count_list = list()
     counts_df_all = list()
 
-    for i, chat in enumerate(chatlist[:8]):
+    for i, chat in enumerate(chatlist):
         sys.stdout.write( '\r%d/' % i + str(len(chatlist)) + ' chats analyzed' )
         sys.stdout.flush()
 
