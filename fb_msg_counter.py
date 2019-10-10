@@ -27,17 +27,18 @@ safefig = True
 create_chats = True
 
 
-# convert the 'messages.html' file into a clean list containing the directories of the chat files
-class handle_html:
+# preparation includes reading the HTML files and creating a chat list containing the directories where the chat files are located
+class preparation:
     # open html file
     def open(self):
         html = codecs.open(self, 'r').read()
 
         return html
 
+    # scan the '/messages' for all entries and create the chat list (list of directory paths)
+    # conditional statement since new (Oct 2019) data has a different file structure
+    # the personal chats are now in a '/inbox' subfolder
     def create_chatlist():
-        # conditional statement since new (Oct 2019) data has a different file structure
-        # the personal chats are now in a '/inbox' subfolder
         if path.exists(dir+'messages/inbox') == True:
             chatlist = next(os.walk('messages/inbox'))[1]
             chatlist = [glob.glob(dir + 'messages/inbox/'+ x +'/message*.html') for x in chatlist]
@@ -53,7 +54,7 @@ class handle_html:
 # parse the string and convert it into a pandas dataframe containing 'date', 'name' and 'text'
 # additionally, extract the user name and the name of the dialog partner
 def to_dataframe(chat):
-    html_chat = handle_html.open(chat)
+    html_chat = preparation.open(chat)
 
     split1 = html_chat.split('</div></div>')
     split1.reverse()
@@ -180,9 +181,9 @@ def plot(df, partner_list, total_msg_count_list, safefig=safefig):
     return plt.show()
 
 
-# main function creates a chatlist and loops through all functions for each element in the chatlist
+# main function creates a chat list and loops through all functions for each element in the chat list
 def main():
-    chatlist = handle_html.create_chatlist()
+    chatlist = preparation.create_chatlist()
 
     df_list = list()
     partner_list = list()
