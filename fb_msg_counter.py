@@ -24,6 +24,8 @@ dir = os.path.dirname(os.path.realpath(__file__))+'/'
 safefig = True
 create_chats = True
 
+dir = '/Users/Marvin/Documents/Diverse/facebook-100000033726811(2)/'
+
 
 # convert the 'messages.html' file into a clean list containing the directories of the chat files
 class handle_html:
@@ -58,6 +60,7 @@ def to_dataframe(chat):
     user_name = split1[2][index1+14:index2]
 
     split2 = [x for x in split1 if '</div' in x]
+    split2 = [x.strip('</div><div></div><div>') for x in split2]
 
     index3 = split2[-1].rfind('">')
     partner_name = split2[-1][index3+2:]
@@ -98,7 +101,7 @@ def to_dataframe(chat):
 
 def to_datetime(dataframe, partner, create_chats):
 
-    if 'PM' in dataframe['date'][0]:
+    if 'PM' or 'AM' in dataframe['date'][0]:
         locale.setlocale(locale.LC_TIME, 'en_US')
         for index in range(len(dataframe['date'])):
             dataframe['date'][index] = datetime.strptime(dataframe['date'][index], '%b %d, %Y, %I:%M %p')
