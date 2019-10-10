@@ -24,7 +24,6 @@ dir = os.path.dirname(os.path.realpath(__file__))+'/'
 safefig = True
 create_chats = True
 
-
 # convert the 'messages.html' file into a clean list containing the directories of the chat files
 class handle_html:
     # open the html file
@@ -99,7 +98,12 @@ def to_dataframe(chat):
 
 def to_datetime(dataframe, partner, create_chats):
 
-    if 'PM' or 'AM' in dataframe['date'][0]:
+    if 'AM' in dataframe['date'][0]:
+        locale.setlocale(locale.LC_TIME, 'en_US')
+        for index in range(len(dataframe['date'])):
+            dataframe['date'][index] = datetime.strptime(dataframe['date'][index], '%b %d, %Y, %I:%M %p')
+
+    elif 'PM' in dataframe['date'][0]:
         locale.setlocale(locale.LC_TIME, 'en_US')
         for index in range(len(dataframe['date'])):
             dataframe['date'][index] = datetime.strptime(dataframe['date'][index], '%b %d, %Y, %I:%M %p')
