@@ -25,7 +25,7 @@ All you personal data facebook has ever recorded can be requested from facebook.
   * The format of your download request should be HTML.
   * The quality of photos, videos and other media.
   * A specific date range of information. If you don't select a date range, you'll request all the information for the categories you've selected.
-* Make sure to have your facebook language settings on either english or german (other languages are currently not supportet)
+* Make sure to have your facebook language settings on either english or german (other languages are currently not supported)
 * Click **Create File** to confirm the download request.
 
 After you've made a download request, it will appear as **Pending** in the **Available** Files section of the Download Your Information Tool. It may take several days for us to finish preparing your download request.
